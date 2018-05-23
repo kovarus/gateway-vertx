@@ -2,8 +2,8 @@
 
 This microservice can only be run locally if the inventory and catalog services are also running locally
 
-* Inventory github project: [https://github.com/bugbiteme/inventory-wildfly-swarm]()
-* Catalog github project: [https://github.com/bugbiteme/catalog-spring-boot]()
+* Inventory github project: [https://github.com/bugbiteme/inventory-wildfly-swarm](https://github.com/bugbiteme/inventory-wildfly-swarm)
+* Catalog github project: [https://github.com/bugbiteme/catalog-spring-boot](https://github.com/bugbiteme/catalog-spring-boot)
 
 The gateway microservice also cannot be run in OpenShift unless the inventory and catalog services are also running in OpenShift.
 
@@ -75,13 +75,40 @@ Grant permission to the API Gateway to be able to access OpenShift REST API and 
 
 `$ oc policy add-role-to-user view -n coolstore -z default`
 
+### Deploying from local source using Maven
 To build and deploy the gateway service into OpenShift using the fabric8 maven plugin, run the following Maven command:
 
 `$ mvn fabric8:deploy`
 
 While you are waiting for the deploy command to complete, you can log into the OpenShift web consol and check the progress of your deployment, and even view the build and deployment logs, which should look very similar to the messages seen when running the service locally.
 
-Once the service ha been deployed, you can get the url by running
+### Deploying from github
+The Java S2I image enables developers to automatically build, deploy and run java applications on demand, in OpenShift Container Platform, by simply specifying the location of their application source code or compiled java binaries. In many cases, these java applications are bootable “fat jars” that include an embedded version of an application server and other frameworks (wildfly-swarm in this instance). 
+
+Before we start using the Java S2I image we need to tell OpenShift how to find it. This is done by creating an image stream. The image stream definition can be downloaded and used. To add the image stream to your project run the following command:
+
+`$ oc create -f openjdk-s2i-imagestream.json`
+
+Now you can deploy the service from github
+
+`$ oc new-app https://github.com/bugbiteme/gateway-vertx.git --name gateway --image-stream=redhat-openjdk18-openshift`
+
+A build gets created and starts building the Node.js Web UI container image. You can see the build logs using OpenShift Web Console or OpenShift CLI:
+
+`$ oc logs -f bc/gateway`
+
+In order to access the gateway from outside (e.g. from a browser), it needs to get added to the load balancer. Run the following command to add the gateway service to the built-in HAProxy load balancer in OpenShift.
+
+~~~
+$ oc expose svc/gateway
+$ oc get route gateway
+~~~
+
+While you are waiting for the deploy command to complete, you can log into the OpenShift web consol and check the progress of your deployment, and even view the build and deployment logs, which should look very similar to the messages seen when running the service locally.
+
+
+### Validate 
+Once the service has been deployed, you can get the url by running
 
 `$ oc get route`
 
