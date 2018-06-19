@@ -2,8 +2,8 @@
 
 This microservice can only be run locally if the inventory and catalog services are also running locally
 
-* Inventory github project: [https://github.com/bugbiteme/inventory-wildfly-swarm](https://github.com/bugbiteme/inventory-wildfly-swarm)
-* Catalog github project: [https://github.com/bugbiteme/catalog-spring-boot](https://github.com/bugbiteme/catalog-spring-boot)
+* Inventory github project: [https://github.com/kovarus/inventory-wildfly-swarm](https://github.com/kovarus/inventory-wildfly-swarm)
+* Catalog github project: [https://github.com/kovarus/catalog-spring-boot](https://github.com/kovarus/catalog-spring-boot)
 
 The gateway microservice also cannot be run in OpenShift unless the inventory and catalog services are also running in OpenShift.
 
@@ -91,7 +91,7 @@ Before we start using the Java S2I image we need to tell OpenShift how to find i
 
 Now you can deploy the service from github
 
-`$ oc new-app https://github.com/bugbiteme/gateway-vertx.git --name gateway --image-stream=redhat-openjdk18-openshift`
+`$ oc new-app https://github.com/kovarus/gateway-vertx.git --name gateway --image-stream=redhat-openjdk18-openshift`
 
 A build gets created and starts building the Node.js Web UI container image. You can see the build logs using OpenShift Web Console or OpenShift CLI:
 
@@ -133,6 +133,6 @@ validate it is running using curl (or a web browser)
 ~~~~
 
 Original source:
-[http://guides-cdk-roadshow.b9ad.pro-us-east-1.openshiftapps.com/index.html#/workshop/roadshow/module/vertx]()
+[http://guides-cdk-roadshow.b9ad.pro-us-east-1.openshiftapps.com/index.html#/workshop/roadshow/module/vertx](http://guides-cdk-roadshow.b9ad.pro-us-east-1.openshiftapps.com/index.html#/workshop/roadshow/module/vertx)
 
 
